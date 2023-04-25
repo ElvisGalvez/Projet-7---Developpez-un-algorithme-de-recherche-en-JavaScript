@@ -1,0 +1,70 @@
+@charset "UTF-8";
+/* Site général */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "DM Sans", sans-serif;
+}
+
+header {
+  color: #D04F4F;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+header h1 {
+  font-size: 36px;
+}
+header img#site_icon {
+  height: 46.29px;
+  width: 50.48px;
+}
+
+/* Section de recherche */
+.search {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.search form {
+  display: flex;
+  align-items: center;
+}
+
+.search input[type=text] {
+  border: none;
+  padding: 0.5rem;
+  font-size: 1rem;
+  width: 100%;
+  background-color: #E7E7E7;
+}
+
+.search button {
+  background-color: transparent;
+  border: none;
+  font-size: 1.5rem;
+  color: #333;
+  margin-left: 0.5rem;
+}
+
+.menu_boxes {
+  display: flex;
+  gap: 1rem;
+}
+
+.menu_box {
+  border: 1px solid #333;
+  padding: 0.5rem;
+  text-align: center;
+}
+
+.menu_box h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}/*# sourceMappingURL=style.css.map */
