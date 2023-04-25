@@ -2,10 +2,11 @@
 <html lang="fr">
 
 <head>
-  <meta charset="UTF-8">
-  <title>Les Petits Plats</title>
-  <link rel="stylesheet" href="/css/style.css">
-</head>
+    <meta charset="UTF-8">
+    <title>Les Petits Plats</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <script src="https://kit.fontawesome.com/6f51db609b.js" crossorigin="anonymous"></script>
+  </head>
 
 <body>
   <header>
@@ -16,25 +17,43 @@
   <!-- Section de recherche -->
   <section class="search">
     <form>
-      <input type="text" placeholder="Rechercher...">
-      <button><i class="fas fa-search"></i></button>
+      <input type="text" placeholder="Rechercher une recette">
+      <i class="fas fa-search"></i>
     </form>
     <div class="menu_boxes">
-      <div class="menu_box">
-        <h3>Ingrédients</h3>
-      </div>
-      <div class="menu_box">
-        <h3>Appareils</h3>
-      </div>
-      <div class="menu_box">
-        <h3>Ustensiles</h3>
-      </div>
+        <div class="ingredients_menu_box menu_box">
+            <h3>Ingrédients <i class="fas fa-chevron-down"></i></h3>
+          </div>
+          <div class="appliance_menu_box menu_box">
+            <h3>Appareils <i class="fas fa-chevron-down"></i></h3>
+          </div>
+          <div class="ustensils_menu_box menu_box">
+            <h3>Ustensiles <i class="fas fa-chevron-down"></i></h3>
+          </div>
     </div>
   </section>
 
   <!-- Section pour afficher les recettes -->
   <section class="recipes">
     
+      <template id="recipe-card-template">
+        <article class="recipe-card">
+          <div class="recipe-card__image-placeholder"></div>
+          <div class="recipe-card__details">
+            <div class="recipe-card__title-time">
+                <h2 class="recipe-card__title"></h2>
+                <p class="recipe-card__time"></p>
+              </div>
+              <div class="recipe-card__ingredients-description">
+                <ul class="recipe-card__ingredients"></ul>
+                <p class="recipe-card__description"></p>
+              </div>
+          </div>
+        </article>
+      </template>
+    
   </section>
 </body>
+
+<script type="module" src="/scripts/index.js"></script>
 </html>
