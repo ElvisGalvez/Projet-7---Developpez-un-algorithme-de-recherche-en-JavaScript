@@ -15,12 +15,12 @@ recipes.forEach(recipe => {
   timeElement.appendChild(timeIcon);
   timeElement.appendChild(timeText);
 
-  recipeCard.querySelector('.recipe-card__description').textContent = recipe.description;
+  recipeCard.querySelector('.recipe-card__description').textContent = `${recipe.description.slice(0, 200)}...`;
 
   const ingredientsList = recipeCard.querySelector('.recipe-card__ingredients');
   recipe.ingredients.forEach(ingredient => {
     const ingredientItem = document.createElement('li');
-    ingredientItem.textContent = `${ingredient.ingredient} - ${ingredient.quantity} ${ingredient.unit || ''}`;
+    ingredientItem.innerHTML = `<strong>${ingredient.ingredient}:</strong> ${ingredient.quantity} ${ingredient.unit || ''}`;
     ingredientsList.appendChild(ingredientItem);
   });
 
