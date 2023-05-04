@@ -2,11 +2,11 @@
 <html lang="fr">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Les Petits Plats</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <script src="https://kit.fontawesome.com/6f51db609b.js" crossorigin="anonymous"></script>
-  </head>
+  <meta charset="UTF-8">
+  <title>Les Petits Plats</title>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://kit.fontawesome.com/6f51db609b.js" crossorigin="anonymous"></script>
+</head>
 
 <body>
   <header>
@@ -21,38 +21,56 @@
       <i class="fas fa-search"></i>
     </form>
     <div class="menu_boxes">
-      <div class="ingredients_menu_box menu_box">
-        <h3>Ingrédients <span class="menu_chevron fas fa-chevron-down"></span></h3>
+
+      <button class="menu_button" id="ingredients_button" aria-haspopup="listbox" aria-expanded="false"
+        aria-labelledby="ingredients_button">
+        <span class="menu_title">Ingrédients</span> <span class="menu_chevron fas fa-chevron-down"></span>
+      </button>
+      <div class="dropdown" id="ingredients_dropdown">
+        <div class="tags" id="ingredients_tags"></div>
       </div>
-      <div class="appliance_menu_box menu_box">
-        <h3>Appareils <span class="menu_chevron fas fa-chevron-down"></span></h3>
-      </div>
-      <div class="ustensils_menu_box menu_box">
-        <h3>Ustensiles <span class="menu_chevron fas fa-chevron-down"></span></h3>
-      </div>
+
+        <button class="menu_button" id="appliance_button" aria-haspopup="listbox" aria-expanded="false"
+          aria-labelledby="appliance_button">
+          <span class="menu_title">Appareils</span> <span class="menu_chevron fas fa-chevron-down"></span>
+        </button>
+        <div class="dropdown" id="appliance_dropdown">
+          <div class="tags" id="appliance_tags"></div>
+        </div>
+
+        <button class="menu_button" id="ustensils_button" aria-haspopup="listbox" aria-expanded="false"
+          aria-labelledby="ustensils_button">
+          <span class="menu_title">Ustensiles</span> <span class="menu_chevron fas fa-chevron-down"></span>
+        </button>
+        <div class="dropdown" id="ustensils_dropdown">
+          <div class="tags" id="ustensils_tags"></div>
+        </div>
+
     </div>
   </section>
 
   <!-- Section pour afficher les recettes -->
   <section class="recipes">
-    
-      <template id="recipe-card-template">
-        <article class="recipe-card">
-          <div class="recipe-card__image-placeholder"></div>
-          <div class="recipe-card__details">
-            <div class="recipe-card__title-time">
-                <h2 class="recipe-card__title"></h2>
-                <p class="recipe-card__time"></p>
-              </div>
-              <div class="recipe-card__ingredients-description">
-                <ul class="recipe-card__ingredients"></ul>
-                <p class="recipe-card__description"></p>
-              </div>
+
+    <template id="recipe-card-template">
+      <article class="recipe-card">
+        <div class="recipe-card__image-placeholder"></div>
+        <div class="recipe-card__details">
+          <div class="recipe-card__title-time">
+            <h2 class="recipe-card__title"></h2>
+            <p class="recipe-card__time"></p>
           </div>
-        </article>
-      </template>
-    
+          <div class="recipe-card__ingredients-description">
+            <ul class="recipe-card__ingredients"></ul>
+            <p class="recipe-card__description"></p>
+          </div>
+        </div>
+      </article>
+    </template>
+
   </section>
   <script type="module" src="/scripts/index.js"></script>
+  <script type="module" src="/scripts/sort.js"></script>
 </body>
+
 </html>

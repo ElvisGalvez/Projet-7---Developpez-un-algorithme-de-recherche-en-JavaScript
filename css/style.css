@@ -65,42 +65,30 @@ header img#site_icon {
   margin: 30px 0px 20px 0px;
 }
 
-.menu_box {
-  border-radius: 5px;
-  padding: 0.5rem;
-  text-align: center;
-  display: flex;
-  align-items: center;
+.menu_button {
   width: 170px;
   height: 69px;
   margin: 0px 20px 0px 0px;
+  border-radius: 5px;
+  border: 0px;
+  color: white;
+  font-size: 18px;
 }
 
-.ingredients_menu_box {
+#ingredients_button {
   background-color: #3282F7;
 }
 
-.appliance_menu_box {
+#appliance_button {
   background-color: #68D9A4;
 }
 
-.ustensils_menu_box {
+#ustensils_button {
   background-color: #ED6454;
 }
 
-.menu_box h3 {
-  margin: 0;
-  font-size: 1rem;
-  color: white;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-}
-
 .menu_chevron {
-  margin-left: 5px;
+  margin: 0px 0px 0px 35px;
 }
 
 .recipes {
@@ -174,4 +162,67 @@ header img#site_icon {
   font-size: 12px;
   width: 171px;
   height: 86px;
+}
+
+.dropdown {
+  display: none;
+  width: 667px;
+  height: 397px;
+  border-radius: 5px;
+  z-index: 1;
+  margin-right: 20px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  border-radius: 0px 0px 5px 5px;
+  padding: 0px 0px 0px 10px;
+}
+
+#ingredients_tags, input.ingredients_search {
+  background-color: #3282F7;
+}
+
+#appliance_tags, input.appliances_search {
+  background-color: #68D9A4;
+}
+
+#ustensils_tags, input.ustensils_search {
+  background-color: #ED6454;
+}
+
+.tag {
+  color: white;
+  font-size: 18px;
+  font-weight: 400;
+  flex-basis: calc(33.333% - 20px);
+  margin-bottom: 10px;
+}
+
+input.ingredients_search::-moz-placeholder, input.appliances_search::-moz-placeholder, input.ustensils_search::-moz-placeholder {
+  color: white;
+  border-radius: 5px 5px 0px 0px;
+}
+
+input.ingredients_search,
+input.appliances_search,
+input.ustensils_search,
+input.ingredients_search::placeholder,
+input.appliances_search::placeholder,
+input.ustensils_search::placeholder {
+  color: white;
+  border-radius: 5px 5px 0px 0px;
+}
+
+.search-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.search-container i {
+  color: white;
+  font-size: 16px;
 }/*# sourceMappingURL=style.css.map */

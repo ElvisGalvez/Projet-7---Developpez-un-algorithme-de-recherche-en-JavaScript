@@ -26,3 +26,4 @@ recipes.forEach(recipe => {
 
   recipesSection.appendChild(recipeCard);
 });
+
