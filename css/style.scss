@@ -229,3 +229,18 @@ input.ustensils_search::placeholder
   color: white;
   font-size: 16px;
 }
+
+.selected-ingredients-tag {
+  background-color: #3498db;
+  color: rgb(185, 13, 13);
+}
+
+.selected-appliances-tag {
+  background-color: #2ecc71;
+  color: rgb(156, 11, 11);
+}
+
+.selected-ustensils-tag {
+  background-color: #e67e22;
+  color: rgb(168, 5, 5);
+}
