@@ -199,6 +199,9 @@ header img#site_icon {
   font-weight: 400;
   flex-basis: calc(33.333% - 20px);
   margin-bottom: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
 }
 
 input.ingredients_search::-moz-placeholder, input.appliances_search::-moz-placeholder, input.ustensils_search::-moz-placeholder {
@@ -227,17 +230,50 @@ input.ustensils_search::placeholder {
   font-size: 16px;
 }
 
-.selected-ingredients-tag {
-  background-color: #3498db;
-  color: rgb(185, 13, 13);
+.selected-tags-container {
+  display: flex;
+  flex-direction: row;
 }
 
-.selected-appliances-tag {
-  background-color: #2ecc71;
-  color: rgb(156, 11, 11);
+.selected-tag__content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-right: 20px;
 }
 
-.selected-ustensils-tag {
-  background-color: #e67e22;
-  color: rgb(168, 5, 5);
+.selected-tag .selected-tag--ingredients {
+  display: flex;
+}
+
+.selected-tag__title {
+  font-size: 14px;
+  color: #ffffff;
+  padding: 0px 0px 0px 5px;
+}
+
+.selected-tag .selected-tag__close-icon {
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 20px;
+  position: relative;
+}
+
+.selected-tag--ingredients .selected-tag__content {
+  background-color: #3282F7;
+  height: 37px;
+  border-radius: 5px;
+}
+
+.selected-tag--appliances .selected-tag__content {
+  background-color: #68D9A4;
+  height: 37px;
+  border-radius: 5px;
+}
+
+.selected-tag--ustensils .selected-tag__content {
+  background-color: #ED6454;
+  height: 37px;
+  border-radius: 5px;
 }/*# sourceMappingURL=style.css.map */
