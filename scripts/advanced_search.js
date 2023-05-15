@@ -202,3 +202,5 @@ document.addEventListener('DOMContentLoaded', function () {
     
     updateSearchResults();
 });
+
+export { displayRecipes, updateAdvancedSearchFields };
