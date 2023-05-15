@@ -1,6 +1,9 @@
 import { recipes } from '/data/recipes.js';
 import { getTagsContainers } from '/scripts/dropdown.js';
 
+let displayRecipes;
+let updateAdvancedSearchFields;
+
 document.addEventListener('DOMContentLoaded', function () {
     const tagsContainers = getTagsContainers();
     const recipesSection = document.querySelector('.recipes');
@@ -46,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    function displayRecipes(recipesToDisplay) {
+    displayRecipes = function(recipesToDisplay) {
         // Supprime les recettes précédentes
         const oldRecipeCards = document.querySelectorAll('.recipe-card');
         oldRecipeCards.forEach(card => card.remove());
@@ -74,6 +77,7 @@ document.addEventListener('DOMContentLoaded', function () {
             recipesSection.appendChild(recipeCard);
         });
     }
+    
 
     function updateSearchResults() {
         const filteredRecipes = recipes.filter(recipe =>
@@ -86,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
         updateAdvancedSearchFields(filteredRecipes);
     }
 
-    function updateAdvancedSearchFields(filteredRecipes) {
+    updateAdvancedSearchFields = function(filteredRecipes) {
         // Mets à jour les éléments disponibles pour chaque champ de recherche avancée
         Object.keys(tagsContainers).forEach(key => {
             // Crée la liste des éléments disponibles pour le champ de recherche actuel
