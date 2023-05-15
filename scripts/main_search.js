@@ -6,14 +6,26 @@ document.addEventListener('DOMContentLoaded', function () {
     const recipeCardTemplate = document.getElementById('recipe-card-template');
     const recipesSection = document.querySelector('.recipes');
 
+    const searchForm = document.querySelector('.search form');
+const noResultsMessage = document.createElement('div');
+noResultsMessage.id = 'no_results_message';
+noResultsMessage.style.display = 'none';
+noResultsMessage.textContent = 'Aucune recette ne correspond à votre critère… vous pouvez chercher « tarte aux pommes », « poisson », etc.';
+searchForm.parentNode.insertBefore(noResultsMessage, searchForm.nextSibling);
+
+
     displayRecipes(recipes, recipeCardTemplate, recipesSection);
     updateAdvancedSearchFields(recipes, '');
 
     searchInput.addEventListener('input', event => {
-        const searchTerm = event.target.value.toLowerCase();
+        const searchTerm = event.target.value.toLowerCase();    
 
         if (searchTerm.length < 3) {
-            // Si la longueur de la recherche est inférieure à 3, ne fait rien
+            // Si la longueur de la recherche est inférieure à 3, affiche toutes les recettes
+            // Met à jour les champs de recherche avancée avec tous les tags disponibles.
+            noResultsMessage.style.display = 'none';
+            displayRecipes(recipes, recipeCardTemplate, recipesSection);
+            updateAdvancedSearchFields(recipes, '');
             return;
         }
 
@@ -36,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
     
             if (ingredientsText.includes(searchTerm)) {
                 matchingRecipes.push(recipe);
-                continue; // Passe directement à la recette suivante
+                continue; 
             }
     
             if (recipeDescription.includes(searchTerm)) {
@@ -44,7 +56,16 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
 
+        if (matchingRecipes.length === 0) {
+            noResultsMessage.style.display = 'block';
+        } else {
+            noResultsMessage.style.display = 'none';
+        }
+
         displayRecipes(matchingRecipes, recipeCardTemplate, recipesSection);
         updateAdvancedSearchFields(matchingRecipes, searchTerm);
+
+        
     });
+    
 });

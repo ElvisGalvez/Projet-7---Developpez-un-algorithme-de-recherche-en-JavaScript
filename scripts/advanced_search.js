@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
             advancedSearchInputs[key].addEventListener('input', event => {
                 if (event.target.value.length >= 3) {
                     // Met à jour les tags en fonction des lettres saisies
-                    updateAdvancedSearchFields(recipes); 
+                    updateAdvancedSearchFields(recipes, searchInput.value.toLowerCase()); 
                 } else {
                     // Réinitialise les tags lorsqu'on efface les lettres
                     updateAdvancedSearchFields(recipes); 
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
         updateAdvancedSearchFields(filteredRecipes);
     }
 
-    updateAdvancedSearchFields = function(filteredRecipes) {
+    updateAdvancedSearchFields = function(filteredRecipes, searchTerm) {
         // Mets à jour les éléments disponibles pour chaque champ de recherche avancée
         Object.keys(tagsContainers).forEach(key => {
             // Crée la liste des éléments disponibles pour le champ de recherche actuel
@@ -119,7 +119,8 @@ document.addEventListener('DOMContentLoaded', function () {
     
             // Ajoute les nouveaux tags
             const itemTags = Array.from(uniqueItems)
-                .filter(tagText => tagText.includes(advancedSearchValues[key].toLowerCase()))
+                // Filtre les tags qui contiennent à la fois la valeur de recherche avancée et la valeur de recherche principale
+                .filter(tagText => tagText.includes(advancedSearchValues[key].toLowerCase()) && tagText.includes(searchTerm))
                 // Filtre les tags déjà sélectionnés
                 .filter(tagText => !selectedFilters[key].has(tagText)) 
                 .map(tagText => createTag(tagText.charAt(0).toUpperCase() + tagText.slice(1), key));
