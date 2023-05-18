@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (key === 'ingredients') {
                     recipe.ingredients.forEach(ingredient => {
                         const ingredientText = ingredient.ingredient.toLowerCase();
-                        // Modifiez cette ligne pour vérifier une correspondance exacte avec le terme de recherche
+                        // Vérifie une correspondance exacte avec le terme de recherche
                         if (!selectedFilters.ingredients.size || selectedFilters.ingredients.has(ingredientText)) {
                             uniqueItems.add(ingredientText);
                         }
@@ -84,11 +84,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const oldTags = tagsContainers[key].querySelectorAll('.tag');
             oldTags.forEach(tag => tag.remove());
     
-            // Ajoutez votre terme de recherche ici
+            // Terme de recherche
             const searchTerm = advancedSearchInputs[key].value.toLowerCase();
     
             const itemTags = Array.from(uniqueItems)
-                // Modifiez cette ligne pour vérifier une correspondance exacte avec le terme de recherche
+                // Vérifie une correspondance exacte avec le terme de recherche
                 .filter(tagText => !selectedFilters[key].has(tagText) && tagText.includes(searchTerm))
                 .map(tagText => createTag(tagText.charAt(0).toUpperCase() + tagText.slice(1), key));
             itemTags.forEach(tag => tagsContainers[key].appendChild(tag));

@@ -30,7 +30,6 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
         
-    
         const matchingRecipes = [];
     
         for (let i = 0; i < recipes.length; i++) {
