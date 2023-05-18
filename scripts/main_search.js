@@ -35,22 +35,27 @@ document.addEventListener('DOMContentLoaded', function () {
     
         for (let i = 0; i < recipes.length; i++) {
             const recipe = recipes[i];
+            const recipeTitle = recipe.name.toLowerCase();
             const recipeDescription = recipe.description.toLowerCase();
-    
+        
             // Filtrer aussi selon les tags actifs
             const matchesAllTags = Object.keys(selectedFilters).every(key => 
                 recipeMatchesFilters(recipe, key, selectedFilters[key])
             );
-    
+        
             let ingredientsText = '';
             for (let j = 0; j < recipe.ingredients.length; j++) {
                 ingredientsText += recipe.ingredients[j].ingredient.toLowerCase() + ' ';
             }
-    
-            const matchesSearchTerm = ingredientsText.includes(searchTerm) || recipeDescription.includes(searchTerm);
-    
+        
+            const matchesSearchTerm = recipeTitle.includes(searchTerm) 
+                                    || ingredientsText.includes(searchTerm) 
+                                    || recipeDescription.includes(searchTerm);
+        
             if (matchesAllTags && matchesSearchTerm) {
                 matchingRecipes.push(recipe);
+                // Un match a été trouvé, passer à la prochaine recette
+                continue;
             }
         }
     

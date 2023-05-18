@@ -30,63 +30,71 @@ document.addEventListener('DOMContentLoaded', function () {
             advancedSearchInputs[key].addEventListener('input', event => {
                 const searchTerm = event.target.value.toLowerCase();
                 if (searchTerm.length >= 3) {
-                    // Filtrer les éléments ici en fonction de 'searchTerm'
-                    const filteredItems = Array.from(uniqueItems).filter(item => item.includes(searchTerm));
-                    // Met à jour les tags en fonction des lettres saisies
-                    updateAdvancedSearchFields(filteredRecipes); 
+                    updateAdvancedSearchFields(recipes);
                 } else {
-                    // Réinitialise les tags lorsqu'on efface les lettres
-                    updateAdvancedSearchFields(recipes, ''); 
+                    // Effectuer une nouvelle recherche à partir de la recherche principale.
+                    const mainSearchTerm = document.querySelector('.main_search').value.toLowerCase();
+                    if (mainSearchTerm.length >= 3) {
+                        const filteredRecipes = recipes.filter(recipe => {
+                            return recipe.name.toLowerCase().includes(mainSearchTerm)
+                                || recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(mainSearchTerm))
+                                || recipe.description.toLowerCase().includes(mainSearchTerm);
+                        });
+    
+                        updateAdvancedSearchFields(filteredRecipes);
+                    } else {
+                        updateAdvancedSearchFields(recipes);
+                    }
                 }
             });
         }
     });
     
+
     updateAdvancedSearchFields = function(filteredRecipes) {
-  // Mets à jour les éléments disponibles pour chaque champ de recherche avancée
-  Object.keys(tagsContainers).forEach(key => {
-    // Crée la liste des éléments disponibles pour le champ de recherche actuel
-    let uniqueItems = new Set();
-
-    // Utilise toutes les recettes pour les ustensiles et les appareils, pas seulement les recettes filtrées
-    const recipesToUse = filteredRecipes;
-
-    recipesToUse.forEach(recipe => {
-      if (key === 'ingredients') {
-        recipe.ingredients.forEach(ingredient => {
-          const ingredientText = ingredient.ingredient.toLowerCase();
-          if (ingredientText.includes(advancedSearchInputs.ingredients.value.toLowerCase())) {
-            uniqueItems.add(ingredientText);
-          }
+        Object.keys(tagsContainers).forEach(key => {
+            let uniqueItems = new Set();
+    
+            const recipesToUse = filteredRecipes.length > 0 ? filteredRecipes : recipes;
+    
+            recipesToUse.forEach(recipe => {
+                if (key === 'ingredients') {
+                    recipe.ingredients.forEach(ingredient => {
+                        const ingredientText = ingredient.ingredient.toLowerCase();
+                        // Modifiez cette ligne pour vérifier une correspondance exacte avec le terme de recherche
+                        if (!selectedFilters.ingredients.size || selectedFilters.ingredients.has(ingredientText)) {
+                            uniqueItems.add(ingredientText);
+                        }
+                    });
+                } else if (key === 'appliances') {
+                    const applianceText = recipe.appliance.toLowerCase();
+                    if (!selectedFilters.appliances.size || selectedFilters.appliances.has(applianceText)) {
+                        uniqueItems.add(applianceText);
+                    }
+                } else {
+                    recipe.ustensils.forEach(ustensil => {
+                        const ustensilText = ustensil.toLowerCase();
+                        if (!selectedFilters.ustensils.size || selectedFilters.ustensils.has(ustensilText)) {
+                            uniqueItems.add(ustensilText);
+                        }
+                    });
+                }
+            });
+    
+            const oldTags = tagsContainers[key].querySelectorAll('.tag');
+            oldTags.forEach(tag => tag.remove());
+    
+            // Ajoutez votre terme de recherche ici
+            const searchTerm = advancedSearchInputs[key].value.toLowerCase();
+    
+            const itemTags = Array.from(uniqueItems)
+                // Modifiez cette ligne pour vérifier une correspondance exacte avec le terme de recherche
+                .filter(tagText => !selectedFilters[key].has(tagText) && tagText.includes(searchTerm))
+                .map(tagText => createTag(tagText.charAt(0).toUpperCase() + tagText.slice(1), key));
+            itemTags.forEach(tag => tagsContainers[key].appendChild(tag));
         });
-      } else if (key === 'appliances') {
-        const applianceText = recipe.appliance.toLowerCase();
-        if (applianceText.includes(advancedSearchInputs.appliances.value.toLowerCase())) {
-          uniqueItems.add(applianceText);
-        }
-      } else {
-        recipe.ustensils.forEach(ustensil => {
-          const ustensilText = ustensil.toLowerCase();
-          if (ustensilText.includes(advancedSearchInputs.ustensils.value.toLowerCase())) {
-            uniqueItems.add(ustensilText);
-          }
-        });
-      }
-    });
-
-    // Supprime les tags précédents
-    const oldTags = tagsContainers[key].querySelectorAll('.tag');
-    oldTags.forEach(tag => tag.remove());
-
-    // Ajoute les nouveaux tags
-    const itemTags = Array.from(uniqueItems)
-      // Filtre les tags déjà sélectionnés
-      .filter(tagText => !selectedFilters[key].has(tagText))
-      .map(tagText => createTag(tagText.charAt(0).toUpperCase() + tagText.slice(1), key));
-    itemTags.forEach(tag => tagsContainers[key].appendChild(tag));
-  });
-};
-
+    };
+    
 
     recipeMatchesFilters = function(recipe, key, filters) {
         const filtersArray = Array.from(filters);
@@ -99,13 +107,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     };
 
-
     displayRecipes = function(recipesToDisplay) {
-        // Supprime les recettes précédentes
         const oldRecipeCards = document.querySelectorAll('.recipe-card');
         oldRecipeCards.forEach(card => card.remove());
 
-        // Affiche les nouvelles recettes filtrées
         recipesToDisplay.forEach(recipe => {
             const recipeCard = recipeCardTemplate.content.cloneNode(true);
             recipeCard.querySelector('.recipe-card__title').textContent = recipe.name;
@@ -125,20 +130,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 ingredientItem.innerHTML = `<strong>${ingredient.ingredient}:</strong> ${ingredient.quantity} ${ingredient.unit || ''}`;
                 ingredientsList.appendChild(ingredientItem);
             });
+
             recipesSection.appendChild(recipeCard);
         });
     };
-
-    function updateSearchResults() {
-        const filteredRecipes = recipes.filter(recipe =>
-          Object.keys(selectedFilters).every(key =>
-            recipeMatchesFilters(recipe, key, selectedFilters[key])
-          )
-        );
-      
-        displayRecipes(filteredRecipes);
-        updateAdvancedSearchFields(filteredRecipes);
-      }
 
     function createTag(tagText, key) {
         const tagElement = document.createElement('div');
@@ -153,33 +148,27 @@ document.addEventListener('DOMContentLoaded', function () {
         tagTextElement.textContent = tagText;
         contentContainer.appendChild(tagTextElement);
 
-        // Ajoute un écouteur d'événement click pour chaque tag
-        tagElement.addEventListener('click', onTagClick); 
+        tagElement.addEventListener('click', onTagClick);
 
         tagElement.appendChild(contentContainer);
 
         return tagElement;
     }
 
-    // Récupération des éléments HTML
     const selectedTagsContainer = document.querySelector('.selected-tags-container');
 
     function onTagClick(event) {
         const tagElement = event.currentTarget;
         const key = tagElement.getAttribute('data-key');
         const tagText = tagElement.innerText;
-        
-        // Convertit la valeur du tag en minuscules avant de l'ajouter aux filtres sélectionnés
+
         selectedFilters[key].add(tagText.toLowerCase());
-        
-        // Crée et ajoute le tag sélectionné sous la barre de recherche
+
         const selectedTagElement = createSelectedTag(tagText, key);
         selectedTagsContainer.appendChild(selectedTagElement);
-        
-        // Efface le champ de recherche
+
         advancedSearchInputs[key].value = '';
-        
-        // Actualise les résultats de la recherche
+
         updateSearchResults();
         tagElement.style.display = 'none';
     }
@@ -187,34 +176,49 @@ document.addEventListener('DOMContentLoaded', function () {
     function createSelectedTag(tagText, key) {
         const selectedTagElement = document.createElement('div');
         selectedTagElement.classList.add('selected-tag', `selected-tag--${key}`);
-        
+
         const tagContent = document.createElement('div');
         tagContent.classList.add('selected-tag__content');
-        
+
         const tagTitle = document.createElement('span');
         tagTitle.classList.add('selected-tag__title');
         tagTitle.textContent = tagText;
-        
+
         const closeIcon = document.createElement('i');
         closeIcon.classList.add('far', 'fa-times-circle', 'selected-tag__close-icon');
-        
+
         tagContent.appendChild(tagTitle);
         tagContent.appendChild(closeIcon);
-        
+
         selectedTagElement.appendChild(tagContent);
-        
+
         closeIcon.addEventListener('click', () => {
-            // Supprime la valeur du tag en minuscules des filtres sélectionnés
             selectedFilters[key].delete(tagText.toLowerCase());
             selectedTagElement.remove();
-    
-            // Actualise les résultats de la recherche et met à jour les tags disponibles
+
             updateSearchResults();
         });
-        
+
         return selectedTagElement;
     }
-    
+
+    function updateSearchResults() {
+        const searchTerm = document.querySelector('.main_search').value.toLowerCase();
+
+        const filteredRecipes = recipes.filter(recipe => {
+            const matchesSearchTerm = recipe.name.toLowerCase().includes(searchTerm)
+                || recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchTerm))
+                || recipe.description.toLowerCase().includes(searchTerm);
+
+            return matchesSearchTerm && Object.keys(selectedFilters).every(key =>
+                recipeMatchesFilters(recipe, key, selectedFilters[key])
+            );
+        });
+
+        updateAdvancedSearchFields(filteredRecipes);
+        displayRecipes(filteredRecipes);
+    }
+
     updateSearchResults();
 });
 
