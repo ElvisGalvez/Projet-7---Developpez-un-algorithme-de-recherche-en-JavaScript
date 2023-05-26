@@ -31,23 +31,30 @@ document.addEventListener('DOMContentLoaded', function () {
         const matchingRecipes = [];
 
         for (let i = 0; i < recipes.length; i++) {
-            const recipe = recipes[i];
-            const recipeTitle = recipe.name.toLowerCase();
-            const recipeDescription = recipe.description.toLowerCase();
-
-            let ingredientsText = '';
-            for (let j = 0; j < recipe.ingredients.length; j++) {
-                ingredientsText += recipe.ingredients[j].ingredient.toLowerCase() + ' ';
-            }
-
-            const matchesSearchTerm = recipeTitle.includes(searchTerm) 
-                                    || ingredientsText.includes(searchTerm) 
-                                    || recipeDescription.includes(searchTerm);
-        
-            if (matchesSearchTerm) {
-                matchingRecipes.push(recipe);
-            }
-        }
+          const recipe = recipes[i];
+          const recipeTitle = recipe.name.toLowerCase();
+          const recipeDescription = recipe.description.toLowerCase();
+      
+          let ingredientsText = '';
+          for (let j = 0; j < recipe.ingredients.length; j++) {
+              ingredientsText += recipe.ingredients[j].ingredient.toLowerCase() + ' ';
+          }
+      
+          if (recipeTitle.includes(searchTerm)) {
+              matchingRecipes.push(recipe);
+              continue; // Continue passe directement à la prochaine itération de la boucle.
+          }
+      
+          if (ingredientsText.includes(searchTerm)) {
+              matchingRecipes.push(recipe);
+              continue;
+          }
+      
+          if (recipeDescription.includes(searchTerm)) {
+              matchingRecipes.push(recipe);
+              continue;
+          }
+      }
 
         if (matchingRecipes.length === 0) {
             noResultsMessage.style.display = 'block';
