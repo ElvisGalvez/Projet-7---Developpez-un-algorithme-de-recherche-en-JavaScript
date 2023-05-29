@@ -49,6 +49,13 @@ header img#site_icon {
   position: relative;
 }
 
+#no_results_message {
+  color: red;
+  margin: 15px 0px 0px 0px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
 .search i {
   background-color: transparent;
   border: none;

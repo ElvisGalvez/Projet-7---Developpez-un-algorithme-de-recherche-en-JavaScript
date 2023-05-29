@@ -1,5 +1,5 @@
 import { recipes } from '/data/recipes.js';
-import { displayRecipes, updateAdvancedSearchFields } from '/scripts/advanced_search.js';
+import { displayRecipes, updateAdvancedSearchFields, selectedFilters, recipeMatchesFilters } from '/scripts/advanced_search.js';
 
 document.addEventListener('DOMContentLoaded', function () {
   const searchInput = document.querySelector('.main_search');
@@ -29,21 +29,15 @@ document.addEventListener('DOMContentLoaded', function () {
     let matchingRecipes = [];
     recipes.forEach(recipe => {
       const recipeTitle = recipe.name.toLowerCase();
-      if (recipeTitle.includes(searchTerm)) {
-        matchingRecipes.push(recipe);
-        return;
-      }
-
       const ingredientsText = recipe.ingredients.map(ingredient => ingredient.ingredient.toLowerCase()).join(' ');
-      if (ingredientsText.includes(searchTerm)) {
-        matchingRecipes.push(recipe);
-        return;
-      }
-
       const recipeDescription = recipe.description.toLowerCase();
-      if (recipeDescription.includes(searchTerm)) {
-        matchingRecipes.push(recipe);
-        return;
+
+      if (recipeTitle.includes(searchTerm) || ingredientsText.includes(searchTerm) || recipeDescription.includes(searchTerm)) {
+        // vérifie si la recette correspond à tous les tags sélectionnés
+        if (Object.keys(selectedFilters).every(key =>
+              recipeMatchesFilters(recipe, key, selectedFilters[key]))) {
+          matchingRecipes.push(recipe);
+        }
       }
     });
 
