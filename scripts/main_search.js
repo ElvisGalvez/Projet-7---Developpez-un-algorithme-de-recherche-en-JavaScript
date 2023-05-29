@@ -1,5 +1,5 @@
 import { recipes } from '/data/recipes.js';
-import { displayRecipes, updateAdvancedSearchFields, selectedFilters, recipeMatchesFilters } from '/scripts/advanced_search.js';
+import { displayRecipes, updateAdvancedSearchFields } from '/scripts/advanced_search.js';
 
 document.addEventListener('DOMContentLoaded', function () {
   const searchInput = document.querySelector('.main_search');
