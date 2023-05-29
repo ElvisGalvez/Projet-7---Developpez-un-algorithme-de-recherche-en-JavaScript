@@ -50,50 +50,66 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
     
+    const mainSearchInput = document.querySelector('.main_search');
+mainSearchInput.addEventListener('input', event => {
+    const searchTerm = event.target.value.toLowerCase();
+
+   const filteredRecipes = recipes.filter(recipe => {
+    const matchesSearchTerm = recipe.name.toLowerCase().includes(searchTerm)
+        || recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchTerm))
+        || recipe.description.toLowerCase().includes(searchTerm);
+
+    const matchesAllSelectedTags = Object.keys(selectedFilters).every(key =>
+        recipeMatchesFilters(recipe, key, selectedFilters[key])
+    );
+
+    return matchesSearchTerm && matchesAllSelectedTags;
+});
+
+
+    updateAdvancedSearchFields(filteredRecipes);
+    displayRecipes(filteredRecipes);
+});
+
 
     updateAdvancedSearchFields = function(filteredRecipes) {
         Object.keys(tagsContainers).forEach(key => {
             let uniqueItems = new Set();
+            const otherFilters = Object.keys(selectedFilters).filter(filterKey => filterKey !== key);
     
             const recipesToUse = filteredRecipes.length > 0 ? filteredRecipes : recipes;
     
             recipesToUse.forEach(recipe => {
-                if (key === 'ingredients') {
-                    recipe.ingredients.forEach(ingredient => {
-                        const ingredientText = ingredient.ingredient.toLowerCase();
-                        // Vérifie une correspondance exacte avec le terme de recherche
-                        if (!selectedFilters.ingredients.size || selectedFilters.ingredients.has(ingredientText)) {
+                if (otherFilters.every(otherKey => recipeMatchesFilters(recipe, otherKey, selectedFilters[otherKey]))) {
+                    if (key === 'ingredients') {
+                        recipe.ingredients.forEach(ingredient => {
+                            const ingredientText = ingredient.ingredient.toLowerCase();
                             uniqueItems.add(ingredientText);
-                        }
-                    });
-                } else if (key === 'appliances') {
-                    const applianceText = recipe.appliance.toLowerCase();
-                    if (!selectedFilters.appliances.size || selectedFilters.appliances.has(applianceText)) {
+                        });
+                    } else if (key === 'appliances') {
+                        const applianceText = recipe.appliance.toLowerCase();
                         uniqueItems.add(applianceText);
-                    }
-                } else {
-                    recipe.ustensils.forEach(ustensil => {
-                        const ustensilText = ustensil.toLowerCase();
-                        if (!selectedFilters.ustensils.size || selectedFilters.ustensils.has(ustensilText)) {
+                    } else {
+                        recipe.ustensils.forEach(ustensil => {
+                            const ustensilText = ustensil.toLowerCase();
                             uniqueItems.add(ustensilText);
-                        }
-                    });
+                        });
+                    }
                 }
             });
     
             const oldTags = tagsContainers[key].querySelectorAll('.tag');
             oldTags.forEach(tag => tag.remove());
     
-            // Terme de recherche
             const searchTerm = advancedSearchInputs[key].value.toLowerCase();
     
             const itemTags = Array.from(uniqueItems)
-                // Vérifie une correspondance exacte avec le terme de recherche
                 .filter(tagText => !selectedFilters[key].has(tagText) && tagText.includes(searchTerm))
                 .map(tagText => createTag(tagText.charAt(0).toUpperCase() + tagText.slice(1), key));
             itemTags.forEach(tag => tagsContainers[key].appendChild(tag));
         });
     };
+    
     
 
     recipeMatchesFilters = function(recipe, key, filters) {
@@ -204,20 +220,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function updateSearchResults() {
         const searchTerm = document.querySelector('.main_search').value.toLowerCase();
-
+    
         const filteredRecipes = recipes.filter(recipe => {
             const matchesSearchTerm = recipe.name.toLowerCase().includes(searchTerm)
                 || recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(searchTerm))
                 || recipe.description.toLowerCase().includes(searchTerm);
-
-            return matchesSearchTerm && Object.keys(selectedFilters).every(key =>
+    
+            const matchesAllSelectedTags = Object.keys(selectedFilters).every(key =>
                 recipeMatchesFilters(recipe, key, selectedFilters[key])
             );
+    
+            return matchesSearchTerm && matchesAllSelectedTags;
         });
-
+    
         updateAdvancedSearchFields(filteredRecipes);
         displayRecipes(filteredRecipes);
     }
+    
 
     updateSearchResults();
 });
